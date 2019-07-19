@@ -1,0 +1,3 @@
+# Collections
+
+An iterable collection of verifiable objects or scalar values which can replace arrays for dependency injection.
