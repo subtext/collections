@@ -5,12 +5,13 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Alonzo Turner",
-            "email": "alonzo.turner@subtextproductions.com"
+            "name": "Alonzo C Turner",
+            "email": "alonzo.turner@subtext.productions"
         }
     ],
     "require": {
-        "php": ">=5.6.0"
+        "php": ">=8.1",
+        "psr/container": "^2.0.2"
     },
     "minimum-stability": "dev",
     "autoload": {
@@ -19,6 +20,6 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.5"
+        "phpunit/phpunit": "^12.1.2"
     }
 }
