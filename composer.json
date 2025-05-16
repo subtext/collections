@@ -1,6 +1,6 @@
 {
     "name": "subtext/collections",
-    "description": "An iterable collection of verifiable objects or scalar values which can replace arrays for dependency injection.",
+    "description": "Provides iterable collections of validated objects or scalar values, enabling fluent, type-safe interfaces in PHP.",
     "type": "package",
     "license": "MIT",
     "authors": [
@@ -16,10 +16,12 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "Subtext\\Collections\\": "src/"
+            "Subtext\\Collections\\": "src/",
+            "Subtext\\Collections\\Tests\\Unit\\": "tests/unit"
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^12.1.2"
+        "phpunit/phpunit": "^12.1.2",
+        "fakerphp/faker": "^1.24.1"
     }
 }
