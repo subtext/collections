@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="vendor/autoload.php" colors="true">
+    <source>
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+    </source>
     <testsuites>
         <testsuite name="Collections Test Suite">
             <directory>tests/unit/</directory>
         </testsuite>
     </testsuites>
 
-    <coverage processUncoveredFiles="true">
-        <include>
-            <directory suffix=".php">src/</directory>
-        </include>
+    <coverage includeUncoveredFiles="true">
+        <report>
+            <html outputDirectory="html"/>
+        </report>
     </coverage>
 
     <php>
