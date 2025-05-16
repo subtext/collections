@@ -5,7 +5,7 @@ use ArrayObject;
 use InvalidArgumentException;
 use JsonSerializable;
 use Psr\Container\ContainerInterface;
-use Subtext\NotFoundException\NotFoundException;
+use Subtext\Collections\NotFoundException;
 use Throwable;
 
 /**
@@ -36,10 +36,14 @@ abstract class Collection extends ArrayObject implements JsonSerializable, Conta
     public function jsonSerialize(): mixed
     {
         $json = [];
-        foreach ($this as $item) {
+        foreach ($this as $key => $item) {
             $interfaces = class_implements($item);
             if (isset($interfaces['JsonSerializable'])) {
-                array_push($json, $item->jsonSerialize());
+                if ($this->isSequential()) {
+                    $json[] = $item;
+                } else {
+                    $json[$key] = $item;
+                }
             }
         }
         return $json;
@@ -64,13 +68,13 @@ abstract class Collection extends ArrayObject implements JsonSerializable, Conta
      * Override the parent class method to inject validation when values are
      * * added to the collection.
      *
-     * @param $key
-     * @param $value
+     * @param mixed $key
+     * @param mixed $value
      *
      * @return void
      * @throws InvalidArgumentException
      */
-    public function offsetSet($key, $value)
+    public function offsetSet(mixed $key, mixed $value): void
     {
         $this->validate($value);
         parent::offsetSet($key, $value);
@@ -118,22 +122,26 @@ abstract class Collection extends ArrayObject implements JsonSerializable, Conta
      */
     public function get(string $id)
     {
-        $value = null;
-        if ($this->has($id)) {
-            try {
+        try {
+            if ($this->has($id)) {
                 $value = parent::offsetGet($id);
-            } catch (Throwable $e) {
-                throw new ContainerException(
-                    'An error occurred while trying to retrieve the value',
-                    $e->getCode(),
-                    $e
+            } else {
+                throw new NotFoundException(
+                    'Not value could be found for key: ' . $id
                 );
             }
-        } else {
-            throw new NotFoundException(
-                'Not value could be found for key: ' . $id
+        } catch (NotFoundException $e) {
+            throw $e;
+            // @codeCoverageIgnoreStart
+        } catch (Throwable $e) {
+            throw new ContainerException(
+                'An error occurred while trying to retrieve the value',
+                $e->getCode(),
+                $e
             );
+            // @codeCoverageIgnoreEnd
         }
+
         return $value;
     }
 
@@ -247,6 +255,16 @@ abstract class Collection extends ArrayObject implements JsonSerializable, Conta
     }
 
     /**
+     * Empty the collection of all contents.
+     *
+     * @return void
+     */
+    public function empty(): void
+    {
+        $this->exchangeArray([]);
+    }
+
+    /**
      * Assigns the value to a new key name in the collection.
      *
      * @param string $oldKey
@@ -274,7 +292,7 @@ abstract class Collection extends ArrayObject implements JsonSerializable, Conta
      *
      * @return Collection A new collection containing the selected slice.
      */
-    public function slice(int $offset, int $length = null): self
+    public function slice(int $offset, ?int $length = null): self
     {
         return new static(array_slice($this->getArrayCopy(), $offset, $length));
     }
@@ -326,7 +344,7 @@ abstract class Collection extends ArrayObject implements JsonSerializable, Conta
      *
      * @return void
      */
-    public function walk(callable $callback): void
+    public function walk(callable $callback ): void
     {
         $copy = $this->getArrayCopy();
         array_walk($copy, $callback);
@@ -358,5 +376,4 @@ abstract class Collection extends ArrayObject implements JsonSerializable, Conta
      * @throws InvalidArgumentException
      */
     abstract protected function validate(mixed $value): void;
-
 }

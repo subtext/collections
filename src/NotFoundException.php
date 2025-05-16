@@ -1,6 +1,6 @@
 <?php
 
-namespace Subtext\NotFoundException;
+namespace Subtext\Collections;
 
 use InvalidArgumentException;
 use Psr\Container\NotFoundExceptionInterface;
