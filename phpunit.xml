@@ -14,6 +14,7 @@
     <coverage includeUncoveredFiles="true">
         <report>
             <html outputDirectory="html"/>
+            <clover outputFile="clover/clover.xml"/>
         </report>
     </coverage>
 
