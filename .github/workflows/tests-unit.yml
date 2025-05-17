@@ -29,6 +29,9 @@ jobs:
       - name: Run Unit Tests
         run: docker exec collections-php-apache-1 vendor/bin/phpunit
 
+      - name: Install Xmllint
+        run: apt update && apt install -y libxml2-utils
+
       - name: Check Coverage Threshold
         run: |
           FILE=clover/clover.xml
