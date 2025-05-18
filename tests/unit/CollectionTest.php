@@ -154,7 +154,10 @@ class CollectionTest extends TestCase
 
     public function testCanGetKeys(): void
     {
-        foreach (($expected = self::$faker->unique()->words()) as $key) {
+        $expected = array_unique(
+            self::$faker->words(self::$faker->numberBetween(3, 10))
+        );
+        foreach ($expected as $key) {
             $this->unit->set($key, new FooBar(1));
         }
         $this->assertEquals($expected, $this->unit->getKeys());

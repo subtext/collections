@@ -1,4 +1,5 @@
 # Subtext\Collections
+![Run Unit Tests](https://github.com/subtext/collections/actions/workflows/tests-unit.yml/badge.svg)
 
 ## Abstract base class that provides a Java-style Collection interface in PHP.
 This class brings structured, type-safe, and object-oriented collection handling

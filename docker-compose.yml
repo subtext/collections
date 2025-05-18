@@ -3,12 +3,13 @@ name: collections
 services:
   php-apache:
     image: alonzoturner/lamp-stack:latest
+    working_dir: /var/www/
     ports:
       - 80:80
     environment:
       VIRTUAL_DIR: html
       VIRTUAL_HOST: collections.subtext
       VIRTUAL_ADMIN: alonzo.turner@subtext.productions
-      APP_CONFIG: unit.php
+      XDEBUG_MODE: coverage
     volumes:
       - ./:/var/www
