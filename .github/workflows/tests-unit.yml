@@ -48,7 +48,7 @@ jobs:
             echo "⚠️ Error parsing coverage"
             exit 1
           fi
-          PERCENT=$(awk "BEGIN {printf \"%.2f", ($COVERED/$TOTAL) * 100 }")
+          PERCENT=$(awk "BEGIN {printf \"%.2f\", ($COVERED/$TOTAL) * 100 }")
           echo "📈Code Coverage: $PERCENT%"
                     
           
